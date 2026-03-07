@@ -1,5 +1,6 @@
 package me.didk.velorax.wallet.service;
 
+import me.didk.common.exception.ConflictException;
 import me.didk.common.exception.NotFoundException;
 import me.didk.velorax.wallet.domain.TransferStatus;
 import me.didk.velorax.wallet.domain.WalletWithdrawalEntity;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Service
 public class WithdrawalService {
     private static final String REF_TYPE_WITHDRAWAL = "WITHDRAWAL";
+    private static final String REF_TYPE_WITHDRAWAL_CANCEL = "WITHDRAWAL_CANCEL";
 
     private final WalletWithdrawalRepository walletWithdrawalRepository;
     private final WalletService walletService;
@@ -83,6 +85,24 @@ public class WithdrawalService {
         return walletWithdrawalRepository.findById(withdrawalId)
                 .filter(withdrawal -> withdrawal.getUserId().equals(userId))
                 .orElseThrow(() -> new NotFoundException("Withdrawal not found"));
+    }
+
+    @Transactional
+    public WalletWithdrawalEntity cancel(UUID userId, UUID withdrawalId) {
+        WalletWithdrawalEntity withdrawal = getById(userId, withdrawalId);
+        if (withdrawal.getStatus() != TransferStatus.PENDING) {
+            throw new ConflictException("Withdrawal cannot be canceled in current status");
+        }
+
+        walletService.releaseFunds(
+                userId,
+                withdrawal.getAsset(),
+                withdrawal.getAmount().add(withdrawal.getFee()),
+                REF_TYPE_WITHDRAWAL_CANCEL,
+                withdrawal.getId()
+        );
+        withdrawal.setStatus(TransferStatus.CANCELED);
+        return walletWithdrawalRepository.save(withdrawal);
     }
 
     private WalletWithdrawalEntity findExisting(
