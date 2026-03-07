@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import me.didk.common.response.ApiEnvelope;
 import me.didk.user.dto.CreateUserRequest;
 import me.didk.user.dto.UpdateUserRequest;
 import me.didk.user.dto.UserResponse;
@@ -40,11 +41,13 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiResponse(responseCode = "201", content = @Content(schema = @Schema(implementation = ApiEnvelope.class)))
     public UserResponse create(@Valid @RequestBody CreateUserRequest request) {
         return UserResponse.from(userService.create(request));
     }
 
     @GetMapping
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ApiEnvelope.class)))
     public Page<UserResponse> list(
             @RequestParam(required = false) String email,
             @RequestParam(defaultValue = "1") @Min(1) int page,
@@ -54,11 +57,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ApiEnvelope.class)))
     public UserResponse get(@PathVariable UUID id) {
         return UserResponse.from(userService.get(id));
     }
 
     @PatchMapping("/{id}")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = ApiEnvelope.class)))
     public UserResponse update(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest request) {
         return UserResponse.from(userService.update(id, request));
     }
