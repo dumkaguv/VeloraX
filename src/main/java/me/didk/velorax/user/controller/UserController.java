@@ -3,6 +3,11 @@ package me.didk.user.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import me.didk.user.dto.CreateUserRequest;
 import me.didk.user.dto.UpdateUserRequest;
 import me.didk.user.dto.UserResponse;
@@ -24,6 +29,7 @@ import java.util.UUID;
 
 @Validated
 @RestController
+@Tag(name = "Users")
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;

@@ -18,3 +18,11 @@ spring:
     enabled: true
     baseline-on-migrate: true
     baseline-version: 0
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    operations-sorter: alpha
+    tags-sorter: alpha
