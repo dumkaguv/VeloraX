@@ -8,9 +8,7 @@ import me.didk.user.dto.CreateUserRequest;
 import me.didk.user.dto.UpdateUserRequest;
 import me.didk.user.repository.UserRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +43,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserEntity> list(String email, int page, int pageSize) {
-        int safePageSize = Math.min(pageSize, 100);
-        Pageable pageable = PageRequest.of(page - 1, safePageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
+    public Page<UserEntity> list(String email, Pageable pageable) {
         if (email == null || email.isBlank()) {
             return userRepository.findAll(pageable);
         }

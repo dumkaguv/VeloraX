@@ -53,7 +53,18 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         if (!(request instanceof ServletServerHttpRequest servletRequest)) {
             return false;
         }
-        String path = servletRequest.getServletRequest().getRequestURI();
-        return path.startsWith("/swagger-ui") || path.startsWith("/api-docs") || path.startsWith("/v3/api-docs");
+        String requestUri = servletRequest.getServletRequest().getRequestURI();
+        String contextPath = servletRequest.getServletRequest().getContextPath();
+        String path = requestUri;
+
+        if (contextPath != null && !contextPath.isBlank() && requestUri.startsWith(contextPath)) {
+            path = requestUri.substring(contextPath.length());
+        }
+
+        return path.startsWith("/swagger-ui")
+                || path.startsWith("/api/swagger-ui")
+                || path.startsWith("/swagger-ui.html")
+                || path.startsWith("/api-docs")
+                || path.startsWith("/v3/api-docs");
     }
 }

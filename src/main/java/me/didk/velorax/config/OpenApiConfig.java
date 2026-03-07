@@ -1,7 +1,6 @@
 package me.didk.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                 .title("VeloraX API")
-                .version("v1")
+                .version("v1"))
                 .servers(List.of(new Server().url("http://localhost:8080")));
     }
 }
