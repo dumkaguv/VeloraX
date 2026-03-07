@@ -1,5 +1,7 @@
 package me.didk.user.service;
 
+import me.didk.common.exception.ConflictException;
+import me.didk.common.exception.NotFoundException;
 import me.didk.user.domain.UserEntity;
 import me.didk.user.domain.UserRole;
 import me.didk.user.dto.CreateUserRequest;
@@ -26,7 +28,7 @@ public class UserService {
     @Transactional
     public UserEntity create(CreateUserRequest request) {
         if (userRepository.existsByEmailIgnoreCase(request.email())) {
-            throw new RuntimeException("User with this email already exists");
+            throw new ConflictException("User with this email already exists");
         }
 
         UserEntity user = new UserEntity();
@@ -39,7 +41,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserEntity get(UUID id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     @Transactional(readOnly = true)
