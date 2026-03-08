@@ -1,5 +1,7 @@
 package me.didk.velorax.wallet.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import me.didk.velorax.wallet.domain.TransferStatus;
 import me.didk.velorax.wallet.domain.WalletWithdrawalEntity;
 
 import java.math.BigDecimal;
@@ -13,7 +15,8 @@ public record WithdrawalResponse(
         String address,
         BigDecimal amount,
         BigDecimal fee,
-        String status,
+        @Schema(implementation = TransferStatus.class)
+        TransferStatus status,
         String clientWithdrawalId,
         String idempotencyKey,
         String providerRef,
@@ -29,7 +32,7 @@ public record WithdrawalResponse(
                 entity.getAddress(),
                 entity.getAmount(),
                 entity.getFee(),
-                entity.getStatus().name(),
+                entity.getStatus(),
                 entity.getClientWithdrawalId(),
                 entity.getIdempotencyKey(),
                 entity.getProviderRef(),

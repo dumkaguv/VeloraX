@@ -1,5 +1,7 @@
 package me.didk.velorax.wallet.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import me.didk.velorax.wallet.domain.TransferStatus;
 import me.didk.velorax.wallet.domain.WalletDepositEntity;
 
 import java.math.BigDecimal;
@@ -13,7 +15,8 @@ public record DepositResponse(
         String address,
         String txHash,
         BigDecimal amount,
-        String status,
+        @Schema(implementation = TransferStatus.class)
+        TransferStatus status,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -25,7 +28,7 @@ public record DepositResponse(
                 entity.getAddress(),
                 entity.getTxHash(),
                 entity.getAmount(),
-                entity.getStatus().name(),
+                entity.getStatus(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
