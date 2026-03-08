@@ -18,6 +18,8 @@ import java.util.UUID;
 public class WithdrawalService {
     private static final String REF_TYPE_WITHDRAWAL = "WITHDRAWAL";
     private static final String REF_TYPE_WITHDRAWAL_CANCEL = "WITHDRAWAL_CANCEL";
+    private static final String REF_TYPE_WITHDRAWAL_SETTLE = "WITHDRAWAL_SETTLE";
+    private static final String REF_TYPE_WITHDRAWAL_FAILED = "WITHDRAWAL_FAILED";
 
     private final WalletWithdrawalRepository walletWithdrawalRepository;
     private final WalletService walletService;
@@ -102,6 +104,52 @@ public class WithdrawalService {
                 withdrawal.getId()
         );
         withdrawal.setStatus(TransferStatus.CANCELED);
+        return walletWithdrawalRepository.save(withdrawal);
+    }
+
+    @Transactional
+    public WalletWithdrawalEntity updateStatus(UUID userId, UUID withdrawalId, TransferStatus newStatus, String errorMessage) {
+        WalletWithdrawalEntity withdrawal = getById(userId, withdrawalId);
+        TransferStatus currentStatus = withdrawal.getStatus();
+        if (currentStatus == newStatus) {
+            return withdrawal;
+        }
+        if (currentStatus != TransferStatus.PENDING) {
+            throw new ConflictException("Only pending withdrawals can be updated");
+        }
+
+        BigDecimal lockAmount = withdrawal.getAmount().add(withdrawal.getFee());
+        if (newStatus == TransferStatus.CONFIRMED) {
+            walletService.settleLocked(
+                    userId,
+                    withdrawal.getAsset(),
+                    lockAmount,
+                    REF_TYPE_WITHDRAWAL_SETTLE,
+                    withdrawal.getId()
+            );
+        } else if (newStatus == TransferStatus.FAILED) {
+            walletService.releaseFunds(
+                    userId,
+                    withdrawal.getAsset(),
+                    lockAmount,
+                    REF_TYPE_WITHDRAWAL_FAILED,
+                    withdrawal.getId()
+            );
+        } else if (newStatus == TransferStatus.CANCELED) {
+            walletService.releaseFunds(
+                    userId,
+                    withdrawal.getAsset(),
+                    lockAmount,
+                    REF_TYPE_WITHDRAWAL_CANCEL,
+                    withdrawal.getId()
+            );
+        }
+
+        withdrawal.setStatus(newStatus);
+        String normalizedError = normalizeNullable(errorMessage);
+        if (normalizedError != null) {
+            withdrawal.setErrorMessage(normalizedError);
+        }
         return walletWithdrawalRepository.save(withdrawal);
     }
 

@@ -17,6 +17,7 @@ public class WalletService {
     public static final String ENTRY_CREDIT_LOCKED = "CREDIT_LOCKED";
     public static final String ENTRY_DEBIT_LOCKED = "DEBIT_LOCKED";
     public static final String ENTRY_CREDIT_TRADE_SETTLEMENT = "CREDIT_TRADE_SETTLEMENT";
+    public static final String ENTRY_CREDIT_WITHDRAWAL_SETTLEMENT = "CREDIT_WITHDRAWAL_SETTLEMENT";
 
     private final WalletBalanceRepository walletBalanceRepository;
     private final LedgerService ledgerService;
@@ -151,6 +152,37 @@ public class WalletService {
                 userId,
                 normalizedAsset,
                 ENTRY_CREDIT_TRADE_SETTLEMENT,
+                amount,
+                referenceType,
+                referenceId
+        );
+        return balance;
+    }
+
+    @Transactional
+    public WalletBalanceEntity settleLocked(
+            UUID userId,
+            String asset,
+            BigDecimal amount,
+            String referenceType,
+            UUID referenceId
+    ) {
+        validateAmount(amount);
+        String normalizedAsset = normalizeAsset(asset);
+        WalletBalanceEntity balance = getOrCreateForUpdate(userId, normalizedAsset);
+
+        if (balance.getLocked().compareTo(amount) < 0) {
+            throw new ConflictException("Insufficient locked balance to settle");
+        }
+
+        balance.setLocked(balance.getLocked().subtract(amount));
+        walletBalanceRepository.save(balance);
+
+        ledgerService.recordEntry(userId, normalizedAsset, ENTRY_DEBIT_LOCKED, amount, referenceType, referenceId);
+        ledgerService.recordEntry(
+                userId,
+                normalizedAsset,
+                ENTRY_CREDIT_WITHDRAWAL_SETTLEMENT,
                 amount,
                 referenceType,
                 referenceId
