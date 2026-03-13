@@ -1,9 +1,11 @@
 package me.didk.user.controller;
 
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springdoc.core.annotations.ParameterObject;
+import me.didk.common.openapi.OneBasedPageableAsQueryParam;
 import me.didk.common.response.ApiEnvelope;
+import me.didk.common.response.PaginatedApiEnvelope;
 import me.didk.user.dto.CreateUserRequest;
 import me.didk.user.dto.UpdateUserRequest;
 import me.didk.user.dto.UserResponse;
@@ -13,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
-@Validated
 @RestController
 @Tag(name = "Users")
 @RequestMapping("/api/v1/users")
@@ -45,12 +45,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ApiEnvelope<List<UserResponse>> list(
+    @OneBasedPageableAsQueryParam
+    public PaginatedApiEnvelope<List<UserResponse>> list(
             @RequestParam(required = false) String email,
-            @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @Parameter(hidden = true) @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<UserResponse> users = userService.list(email, pageable).map(UserResponse::from);
-        return ApiEnvelope.paginated("Success", users.getContent(), users.getTotalElements(), users.getNumber() + 1, users.getSize());
+        return PaginatedApiEnvelope.success("Success", users);
     }
 
     @GetMapping("/{id}")

@@ -1,6 +1,6 @@
 package me.didk.controller;
 
-import org.springframework.http.ResponseEntity;
+import me.didk.common.response.ApiEnvelope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,8 +10,8 @@ import java.util.Map;
 public class HomeController {
 
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> home() {
-        return ResponseEntity.ok(Map.of(
+    public ApiEnvelope<Map<String, Object>> home() {
+        return ApiEnvelope.success("Success", Map.of(
                 "application", "VeloraX",
                 "api", Map.of(
                         "users", "/api/v1/users",
