@@ -2,7 +2,7 @@ spring.application.name: VeloraX
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/app_db
+    url: jdbc:postgresql://localhost:5433/app_db
     username: user
     password: password
     driver-class-name: org.postgresql.Driver
