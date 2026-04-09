@@ -1,7 +1,7 @@
-package me.didk.velorax.wallet.service;
+package me.didk.wallet.service;
 
-import me.didk.velorax.wallet.domain.WalletAddressEntity;
-import me.didk.velorax.wallet.repository.WalletAddressRepository;
+import me.didk.wallet.domain.WalletAddressEntity;
+import me.didk.wallet.repository.WalletAddressRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

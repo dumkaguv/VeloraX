@@ -1,4 +1,4 @@
-package me.didk.velorax.wallet.domain;
+package me.didk.wallet.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

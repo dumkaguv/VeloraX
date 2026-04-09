@@ -1,6 +1,6 @@
-package me.didk.velorax.wallet.repository;
+package me.didk.wallet.repository;
 
-import me.didk.velorax.wallet.domain.WalletAddressEntity;
+import me.didk.wallet.domain.WalletAddressEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

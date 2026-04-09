@@ -1,16 +1,18 @@
-package me.didk.velorax.wallet.controller;
+package me.didk.wallet.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import me.didk.common.openapi.OneBasedPageableAsQueryParam;
 import me.didk.common.response.ApiEnvelope;
-import me.didk.velorax.wallet.dto.CreateDepositRequest;
-import me.didk.velorax.wallet.dto.CreateWithdrawalRequest;
-import me.didk.velorax.wallet.dto.DepositResponse;
-import me.didk.velorax.wallet.dto.UpdateTransferStatusRequest;
-import me.didk.velorax.wallet.dto.WithdrawalResponse;
-import me.didk.velorax.wallet.service.DepositService;
-import me.didk.velorax.wallet.service.WithdrawalService;
-import org.springdoc.core.annotations.ParameterObject;
+import me.didk.common.response.PaginatedApiEnvelope;
+import me.didk.wallet.dto.CreateDepositRequest;
+import me.didk.wallet.dto.CreateWithdrawalRequest;
+import me.didk.wallet.dto.DepositResponse;
+import me.didk.wallet.dto.UpdateTransferStatusRequest;
+import me.didk.wallet.dto.WithdrawalResponse;
+import me.didk.wallet.service.DepositService;
+import me.didk.wallet.service.WithdrawalService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -47,12 +49,14 @@ public class TransfersController {
     }
 
     @GetMapping("/deposits")
-    public ApiEnvelope<List<DepositResponse>> deposits(
+    @OneBasedPageableAsQueryParam
+    public PaginatedApiEnvelope<List<DepositResponse>> deposits(
             @RequestHeader("X-User-Id") UUID userId,
-            @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @Parameter(hidden = true)
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<DepositResponse> page = depositService.list(userId, pageable).map(DepositResponse::from);
-        return ApiEnvelope.paginated("Success", page.getContent(), page.getTotalElements(), page.getNumber() + 1, page.getSize());
+        return PaginatedApiEnvelope.success("Success", page);
     }
 
     @PostMapping("/deposits")
@@ -98,12 +102,14 @@ public class TransfersController {
     }
 
     @GetMapping("/withdrawals")
-    public ApiEnvelope<List<WithdrawalResponse>> withdrawals(
+    @OneBasedPageableAsQueryParam
+    public PaginatedApiEnvelope<List<WithdrawalResponse>> withdrawals(
             @RequestHeader("X-User-Id") UUID userId,
-            @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @Parameter(hidden = true)
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<WithdrawalResponse> page = withdrawalService.list(userId, pageable).map(WithdrawalResponse::from);
-        return ApiEnvelope.paginated("Success", page.getContent(), page.getTotalElements(), page.getNumber() + 1, page.getSize());
+        return PaginatedApiEnvelope.success("Success", page);
     }
 
     @GetMapping("/withdrawals/{id}")

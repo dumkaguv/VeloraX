@@ -1,6 +1,6 @@
-package me.didk.velorax.wallet.dto;
+package me.didk.wallet.dto;
 
-import me.didk.velorax.wallet.domain.WalletAddressEntity;
+import me.didk.wallet.domain.WalletAddressEntity;
 
 import java.time.Instant;
 

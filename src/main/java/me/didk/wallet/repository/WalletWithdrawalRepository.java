@@ -1,6 +1,6 @@
-package me.didk.velorax.wallet.repository;
+package me.didk.wallet.repository;
 
-import me.didk.velorax.wallet.domain.WalletWithdrawalEntity;
+import me.didk.wallet.domain.WalletWithdrawalEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

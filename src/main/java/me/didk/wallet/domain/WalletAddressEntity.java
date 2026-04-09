@@ -1,20 +1,18 @@
-package me.didk.velorax.wallet.domain;
+package me.didk.wallet.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "wallet_balances")
-public class WalletBalanceEntity {
+@Table(name = "wallet_addresses")
+public class WalletAddressEntity {
     @Id
     @UuidGenerator
     private UUID id;
@@ -25,19 +23,15 @@ public class WalletBalanceEntity {
     @Column(nullable = false, length = 16)
     private String asset;
 
-    @Column(nullable = false, precision = 36, scale = 18)
-    private BigDecimal available;
+    @Column(nullable = false, length = 32)
+    private String network;
 
-    @Column(nullable = false, precision = 36, scale = 18)
-    private BigDecimal locked;
+    @Column(nullable = false, length = 255)
+    private String address;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
 
     public UUID getId() {
         return id;
@@ -59,27 +53,23 @@ public class WalletBalanceEntity {
         this.asset = asset;
     }
 
-    public BigDecimal getAvailable() {
-        return available;
+    public String getNetwork() {
+        return network;
     }
 
-    public void setAvailable(BigDecimal available) {
-        this.available = available;
+    public void setNetwork(String network) {
+        this.network = network;
     }
 
-    public BigDecimal getLocked() {
-        return locked;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLocked(BigDecimal locked) {
-        this.locked = locked;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Instant getCreatedAt() {
         return createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
     }
 }

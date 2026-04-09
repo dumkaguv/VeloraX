@@ -1,4 +1,4 @@
-package me.didk.velorax.wallet.dto;
+package me.didk.wallet.dto;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;

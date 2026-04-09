@@ -1,4 +1,4 @@
-package me.didk.velorax.wallet.domain;
+package me.didk.wallet.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,8 +15,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "wallet_withdrawals")
-public class WalletWithdrawalEntity {
+@Table(name = "wallet_deposits")
+public class WalletDepositEntity {
     @Id
     @UuidGenerator
     private UUID id;
@@ -33,27 +33,15 @@ public class WalletWithdrawalEntity {
     @Column(nullable = false, length = 255)
     private String address;
 
-    @Column(nullable = false, precision = 36, scale = 18)
-    private BigDecimal amount;
+    @Column(name = "tx_hash", length = 128)
+    private String txHash;
 
     @Column(nullable = false, precision = 36, scale = 18)
-    private BigDecimal fee;
+    private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 16)
     private TransferStatus status;
-
-    @Column(name = "client_withdrawal_id", length = 64)
-    private String clientWithdrawalId;
-
-    @Column(name = "idempotency_key", length = 128)
-    private String idempotencyKey;
-
-    @Column(name = "provider_ref", length = 128)
-    private String providerRef;
-
-    @Column(name = "error_message", length = 255)
-    private String errorMessage;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -99,6 +87,14 @@ public class WalletWithdrawalEntity {
         this.address = address;
     }
 
+    public String getTxHash() {
+        return txHash;
+    }
+
+    public void setTxHash(String txHash) {
+        this.txHash = txHash;
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -107,52 +103,12 @@ public class WalletWithdrawalEntity {
         this.amount = amount;
     }
 
-    public BigDecimal getFee() {
-        return fee;
-    }
-
-    public void setFee(BigDecimal fee) {
-        this.fee = fee;
-    }
-
     public TransferStatus getStatus() {
         return status;
     }
 
     public void setStatus(TransferStatus status) {
         this.status = status;
-    }
-
-    public String getClientWithdrawalId() {
-        return clientWithdrawalId;
-    }
-
-    public void setClientWithdrawalId(String clientWithdrawalId) {
-        this.clientWithdrawalId = clientWithdrawalId;
-    }
-
-    public String getIdempotencyKey() {
-        return idempotencyKey;
-    }
-
-    public void setIdempotencyKey(String idempotencyKey) {
-        this.idempotencyKey = idempotencyKey;
-    }
-
-    public String getProviderRef() {
-        return providerRef;
-    }
-
-    public void setProviderRef(String providerRef) {
-        this.providerRef = providerRef;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
     }
 
     public Instant getCreatedAt() {

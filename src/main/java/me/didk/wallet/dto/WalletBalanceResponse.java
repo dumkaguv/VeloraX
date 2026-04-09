@@ -1,6 +1,6 @@
-package me.didk.velorax.wallet.dto;
+package me.didk.wallet.dto;
 
-import me.didk.velorax.wallet.domain.WalletBalanceEntity;
+import me.didk.wallet.domain.WalletBalanceEntity;
 
 import java.math.BigDecimal;
 

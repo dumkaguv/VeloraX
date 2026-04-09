@@ -1,6 +1,6 @@
-package me.didk.velorax.wallet.repository;
+package me.didk.wallet.repository;
 
-import me.didk.velorax.wallet.domain.WalletBalanceEntity;
+import me.didk.wallet.domain.WalletBalanceEntity;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

@@ -1,8 +1,8 @@
-package me.didk.velorax.wallet.service;
+package me.didk.wallet.service;
 
 import me.didk.common.exception.ConflictException;
-import me.didk.velorax.wallet.domain.WalletBalanceEntity;
-import me.didk.velorax.wallet.repository.WalletBalanceRepository;
+import me.didk.wallet.domain.WalletBalanceEntity;
+import me.didk.wallet.repository.WalletBalanceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

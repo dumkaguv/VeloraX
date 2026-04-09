@@ -1,11 +1,11 @@
-package me.didk.velorax.wallet.service;
+package me.didk.wallet.service;
 
 import me.didk.common.exception.ConflictException;
 import me.didk.common.exception.NotFoundException;
-import me.didk.velorax.wallet.domain.TransferStatus;
-import me.didk.velorax.wallet.domain.WalletDepositEntity;
-import me.didk.velorax.wallet.dto.CreateDepositRequest;
-import me.didk.velorax.wallet.repository.WalletDepositRepository;
+import me.didk.wallet.domain.TransferStatus;
+import me.didk.wallet.domain.WalletDepositEntity;
+import me.didk.wallet.dto.CreateDepositRequest;
+import me.didk.wallet.repository.WalletDepositRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

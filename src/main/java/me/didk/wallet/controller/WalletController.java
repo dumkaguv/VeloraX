@@ -1,12 +1,12 @@
-package me.didk.velorax.wallet.controller;
+package me.didk.wallet.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import me.didk.common.response.ApiEnvelope;
-import me.didk.velorax.wallet.dto.DepositAddressResponse;
-import me.didk.velorax.wallet.dto.WalletBalanceResponse;
-import me.didk.velorax.wallet.service.WalletAddressService;
-import me.didk.velorax.wallet.service.WalletService;
+import me.didk.wallet.dto.DepositAddressResponse;
+import me.didk.wallet.dto.WalletBalanceResponse;
+import me.didk.wallet.service.WalletAddressService;
+import me.didk.wallet.service.WalletService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

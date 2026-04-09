@@ -1,7 +1,7 @@
-package me.didk.velorax.wallet.service;
+package me.didk.wallet.service;
 
-import me.didk.velorax.wallet.domain.WalletLedgerEntryEntity;
-import me.didk.velorax.wallet.repository.WalletLedgerEntryRepository;
+import me.didk.wallet.domain.WalletLedgerEntryEntity;
+import me.didk.wallet.repository.WalletLedgerEntryRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package me.didk.velorax.wallet.domain;
+package me.didk.wallet.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
