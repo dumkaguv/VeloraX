@@ -1,5 +1,6 @@
 package me.didk.wallet.service;
 
+import me.didk.common.exception.BadRequestException;
 import me.didk.common.exception.ConflictException;
 import me.didk.wallet.domain.WalletBalanceEntity;
 import me.didk.wallet.repository.WalletBalanceRepository;
@@ -204,14 +205,14 @@ public class WalletService {
 
     private static String normalizeAsset(String asset) {
         if (asset == null || asset.isBlank()) {
-            throw new IllegalArgumentException("Asset is required");
+            throw new BadRequestException("Asset is required");
         }
         return asset.trim().toUpperCase();
     }
 
     private static void validateAmount(BigDecimal amount) {
         if (amount == null || amount.signum() <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than zero");
+            throw new BadRequestException("Amount must be greater than zero");
         }
     }
 }

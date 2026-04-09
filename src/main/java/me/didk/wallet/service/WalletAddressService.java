@@ -1,5 +1,6 @@
 package me.didk.wallet.service;
 
+import me.didk.common.exception.BadRequestException;
 import me.didk.wallet.domain.WalletAddressEntity;
 import me.didk.wallet.repository.WalletAddressRepository;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class WalletAddressService {
 
     private static String normalize(String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Asset is required");
+            throw new BadRequestException("Asset is required");
         }
         return value.trim().toUpperCase();
     }

@@ -1,5 +1,6 @@
 package me.didk.wallet.service;
 
+import me.didk.common.exception.BadRequestException;
 import me.didk.common.exception.ConflictException;
 import me.didk.common.exception.NotFoundException;
 import me.didk.wallet.domain.TransferStatus;
@@ -88,7 +89,7 @@ public class DepositService {
     private static String normalizeRequired(String value, String field) {
         String normalized = normalizeNullable(value);
         if (normalized == null) {
-            throw new IllegalArgumentException(field + " is required");
+            throw new BadRequestException(field + " is required");
         }
         return normalized;
     }
@@ -103,7 +104,7 @@ public class DepositService {
 
     private static BigDecimal requiredPositive(BigDecimal value, String field) {
         if (value == null || value.signum() <= 0) {
-            throw new IllegalArgumentException(field + " must be greater than zero");
+            throw new BadRequestException(field + " must be greater than zero");
         }
         return value;
     }
